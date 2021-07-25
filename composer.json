@@ -1,0 +1,22 @@
+{
+    "name": "pierreminiggio/multi-sources-tiktok-downloader",
+    "description": "TikTok Downloader",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Pierre MINIGGIO",
+            "email": "pierre@miniggiodev.fr"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "ext-curl": "*",
+        "php": "^8.0",
+        "pierreminiggio/tiktok-downloader": "^1.0",
+    },
+    "autoload": {
+        "psr-4": {
+            "PierreMiniggio\\MultiSourcesTiktokDownloader\\": "src/"
+        }
+    }
+}

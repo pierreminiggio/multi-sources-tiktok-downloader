@@ -1,0 +1,93 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "70a9910b15e96414699498b0977bbbd6",
+    "packages": [
+        {
+            "name": "pierreminiggio/shell-tiktok-downloader",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/tiktok-download.git",
+                "reference": "bc269e66526558d23d3e6450a294e71183af7f5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/tiktok-download/zipball/bc269e66526558d23d3e6450a294e71183af7f5d",
+                "reference": "bc269e66526558d23d3e6450a294e71183af7f5d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "description": "Tiktok Downloader",
+            "support": {
+                "source": "https://github.com/pierreminiggio/tiktok-download/tree/2.0.0"
+            },
+            "time": "2021-02-23T21:54:13+00:00"
+        },
+        {
+            "name": "pierreminiggio/tiktok-downloader",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/php-tiktok-downloader.git",
+                "reference": "d927e42153df82b494abbb48592bfef0e02c3aa8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/php-tiktok-downloader/zipball/d927e42153df82b494abbb48592bfef0e02c3aa8",
+                "reference": "d927e42153df82b494abbb48592bfef0e02c3aa8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0",
+                "pierreminiggio/shell-tiktok-downloader": "^2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\TikTokDownloader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "description": "TikTok Downloader",
+            "support": {
+                "issues": "https://github.com/pierreminiggio/php-tiktok-downloader/issues",
+                "source": "https://github.com/pierreminiggio/php-tiktok-downloader/tree/1.0.2"
+            },
+            "time": "2021-05-02T15:05:09+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^8.0"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}

@@ -12,7 +12,7 @@
     "require": {
         "ext-curl": "*",
         "php": "^8.0",
-        "pierreminiggio/tiktok-downloader": "^1.0",
+        "pierreminiggio/tiktok-downloader": "^1.0"
     },
     "autoload": {
         "psr-4": {

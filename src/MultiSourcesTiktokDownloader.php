@@ -102,7 +102,6 @@ class MultiSourcesTiktokDownloader
         fclose($fp);
 
         if (AreFilesTheSame::areFilesTheSame($videoFile, __DIR__ . DIRECTORY_SEPARATOR . 'pub.mp4')) {
-            var_dump('ad');
             unlink($videoFile);
 
             if ($tries === 0) {

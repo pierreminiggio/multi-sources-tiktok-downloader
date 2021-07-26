@@ -3,6 +3,7 @@
 namespace PierreMiniggio\MultiSourcesTiktokDownloader;
 
 use Exception;
+use PierreMiniggio\AreFilesTheSame\AreFilesTheSame;
 use PierreMiniggio\TikTokDownloader\Downloader;
 use PierreMiniggio\TikTokDownloader\DownloadFailedException;
 
@@ -39,7 +40,7 @@ class MultiSourcesTiktokDownloader
             $this->bashDownloader->downloadWithoutWatermark($tikTokUrl, $videoFile);
         } catch (DownloadFailedException) {
             try {
-                $this->tryGoDownloaderDotCom($tikTokUrl, $videoFile);
+                $this->tryGoDownloaderDotCom($tikTokUrl, $videoFile, 3);
             } catch (Exception) {
                 throw new Exception('Download failed');
             }
@@ -60,8 +61,10 @@ class MultiSourcesTiktokDownloader
     /**
      * @throws Exception
      */
-    protected function tryGoDownloaderDotCom(string $videoToPostUrl, string $videoFile): void
+    protected function tryGoDownloaderDotCom(string $videoToPostUrl, string $videoFile, int $tries = 1): void
     {
+        $tries = $tries - 1;
+
         $videoInfoCurl = curl_init(
             'https://godownloader.com/api/tiktok-no-watermark-free?url=' . $videoToPostUrl . '&key=godownloader.com'
         );
@@ -97,5 +100,16 @@ class MultiSourcesTiktokDownloader
         curl_exec($ch);
         curl_close($ch);
         fclose($fp);
+
+        if (AreFilesTheSame::areFilesTheSame($videoFile, __DIR__ . DIRECTORY_SEPARATOR . 'pub.mp4')) {
+            var_dump('ad');
+            unlink($videoFile);
+
+            if ($tries === 0) {
+                throw new Exception('Downloaded file is an ad');
+            }
+
+            $this->tryGoDownloaderDotCom($videoToPostUrl, $videoFile, $tries);
+        }
     }
 }

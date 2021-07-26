@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70a9910b15e96414699498b0977bbbd6",
+    "content-hash": "cac52e93eecc2c55f32d1dbb0b75a418",
     "packages": [
+        {
+            "name": "pierreminiggio/are-files-the-same",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/php-are-files-the-same.git",
+                "reference": "3173a382cd91faf6a1a79e101517e99626cb59da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/php-are-files-the-same/zipball/3173a382cd91faf6a1a79e101517e99626cb59da",
+                "reference": "3173a382cd91faf6a1a79e101517e99626cb59da",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\AreFilesTheSame\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/pierreminiggio/php-are-files-the-same/issues",
+                "source": "https://github.com/pierreminiggio/php-are-files-the-same/tree/1.0.1"
+            },
+            "time": "2021-07-26T23:00:28+00:00"
+        },
         {
             "name": "pierreminiggio/shell-tiktok-downloader",
             "version": "2.0.0",
@@ -86,6 +122,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
+        "ext-curl": "*",
         "php": "^8.0"
     },
     "platform-dev": [],

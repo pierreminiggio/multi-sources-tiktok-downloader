@@ -18,6 +18,6 @@ $tikTokUrls = [
 ];
 
 foreach ($tikTokUrls as $tikTokUrl) {
-   $video = $downloader->download($tikTokUrl);
+    $video = $downloader->download($tikTokUrl);
     var_dump($video);
 }

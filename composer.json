@@ -13,7 +13,8 @@
         "ext-curl": "*",
         "php": "^8.0",
         "pierreminiggio/tiktok-downloader": "^1.0",
-        "pierreminiggio/are-files-the-same": "^1.0"
+        "pierreminiggio/are-files-the-same": "^1.0",
+        "pierreminiggio/github-action-run-starter-and-artifact-downloader": "^2.0"
     },
     "autoload": {
         "psr-4": {

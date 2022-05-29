@@ -1,10 +1,15 @@
 <?php
 
 use PierreMiniggio\MultiSourcesTiktokDownloader\MultiSourcesTiktokDownloader;
+use PierreMiniggio\MultiSourcesTiktokDownloader\Repository;
 
-require __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+$projectFolder = __DIR__ . DIRECTORY_SEPARATOR;
 
-$downloader = MultiSourcesTiktokDownloader::buildSelf();
+require $projectFolder . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+$config = require $projectFolder . DIRECTORY_SEPARATOR . 'config.php';
+
+$downloader = MultiSourcesTiktokDownloader::buildSelf(new Repository(...$config));
 $tikTokUrls = [
     'https://www.tiktok.com/@pierreminiggio/video/6988155668104531205',
     'https://www.tiktok.com/@pierreminiggio/video/6985836381427879174',
@@ -14,7 +19,8 @@ $tikTokUrls = [
     'https://www.tiktok.com/@pierreminiggio/video/6983980673216318726',
     'https://www.tiktok.com/@pierreminiggio/video/6983238803506908422',
     'https://www.tiktok.com/@pierreminiggio/video/6983354440447315205',
-    'https://www.tiktok.com/@pierreminiggio/video/6981012184822189317'
+    'https://www.tiktok.com/@pierreminiggio/video/6981012184822189317',
+    'https://www.tiktok.com/@muskzone/video/6929925409001737477'
 ];
 
 foreach ($tikTokUrls as $tikTokUrl) {

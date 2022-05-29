@@ -4,6 +4,8 @@ namespace PierreMiniggio\MultiSourcesTiktokDownloader;
 
 use Exception;
 use PierreMiniggio\AreFilesTheSame\AreFilesTheSame;
+use PierreMiniggio\GithubActionRunStarterAndArtifactDownloader\GithubActionRunStarterAndArtifactDownloader;
+use PierreMiniggio\GithubActionRunStarterAndArtifactDownloader\GithubActionRunStarterAndArtifactDownloaderFactory;
 use PierreMiniggio\TikTokDownloader\Downloader;
 use PierreMiniggio\TikTokDownloader\DownloadFailedException;
 
@@ -11,12 +13,17 @@ class MultiSourcesTiktokDownloader
 {
 
     private string $cacheFolder;
+    private GithubActionRunStarterAndArtifactDownloader $githubActionRunStarterAndArtifactDownloader;
+    private ?Repository $snapTikApiRepo;
 
     public function __construct(
-        private Downloader $bashDownloader
+        private Downloader $bashDownloader,
+        ?Repository $snapTikApiRepo = null
     )
     {
         $this->cacheFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR;
+        $this->githubActionRunStarterAndArtifactDownloader = (new GithubActionRunStarterAndArtifactDownloaderFactory())->make();
+        $this->snapTikApiRepo = $snapTikApiRepo;
     }
 
     /**
@@ -42,7 +49,11 @@ class MultiSourcesTiktokDownloader
             try {
                 $this->tryGoDownloaderDotCom($tikTokUrl, $videoFile, 3);
             } catch (Exception) {
-                throw new Exception('Download failed');
+                try {
+                    $this->trySnapTikApp($tikTokUrl, $videoFile);
+                } catch (Exception) {
+                    throw new Exception('Download failed');
+                }
             }
         }
 
@@ -53,9 +64,9 @@ class MultiSourcesTiktokDownloader
         throw new Exception('Download failed');
     }
 
-    public static function buildSelf(): self
+    public static function buildSelf(?Repository $snapTikApiRepo = null): self
     {
-        return new self(new Downloader());
+        return new self(new Downloader(), $snapTikApiRepo);
     }
 
     /**
@@ -114,6 +125,51 @@ class MultiSourcesTiktokDownloader
             }
 
             $this->tryGoDownloaderDotCom($videoToPostUrl, $videoFile, $tries);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function trySnapTikApp(string $videoToPostUrl, string $videoFile): void
+    {
+        $artifacts = $this->githubActionRunStarterAndArtifactDownloader->runActionAndGetArtifacts(
+            $this->snapTikApiRepo->token,
+            $this->snapTikApiRepo->owner,
+            $this->snapTikApiRepo->repo,
+            'get-link.yml',
+            refreshTime: 50,
+            inputs: ['link' => $videoToPostUrl]
+        );
+
+        if (! $artifacts) {
+            throw new Exception('No artifact');
+        }
+
+        $artifact = $artifacts[0];
+
+        if (! file_exists($artifact)) {
+            throw new Exception('Artifact meaning');
+        }
+
+        $downloadLink = trim(file_get_contents($artifact));
+        unlink($artifact);
+
+        if (! str_starts_with($downloadLink, 'https://tikcdn.net')) {
+            throw new Exception('Bad download link');
+        }
+
+        $fp = fopen($videoFile, 'w+');
+        $ch = curl_init($downloadLink);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+        if (! file_exists($videoFile)) {
+            throw new Exception('Download failed');
         }
     }
 }

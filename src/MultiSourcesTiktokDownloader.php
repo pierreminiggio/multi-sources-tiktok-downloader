@@ -171,5 +171,12 @@ class MultiSourcesTiktokDownloader
         if (! file_exists($videoFile)) {
             throw new Exception('Download failed');
         }
+
+        $videoFolder = __DIR__ . DIRECTORY_SEPARATOR;
+
+        if (AreFilesTheSame::areFilesTheSame($videoFile, $videoFolder . 'vide.mp4')) {
+            unlink($videoFile);
+            throw new Exception('Downloaded file is empty');
+        }
     }
 }

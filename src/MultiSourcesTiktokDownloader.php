@@ -159,14 +159,23 @@ class MultiSourcesTiktokDownloader
             throw new Exception('Bad download link');
         }
 
-        $fp = fopen($videoFile, 'w+');
-        $ch = curl_init($downloadLink);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($ch);
-        curl_close($ch);
-        fclose($fp);
+        $downloadFile = function (string $videoFile, string $downloadLink): void {
+            $fp = fopen($videoFile, 'w+');
+            $ch = curl_init($downloadLink);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_exec($ch);
+            curl_close($ch);
+            fclose($fp);
+        };
+
+        $downloadFile($videoFile, $downloadLink);
+
+        if (! file_exists($videoFile)) {
+            // Try again
+            $downloadFile($videoFile, $downloadLink);
+        }
 
         if (! file_exists($videoFile)) {
             throw new Exception('Download failed');

@@ -133,6 +133,34 @@ class MultiSourcesTiktokDownloader
      */
     protected function trySnapTikApp(string $videoToPostUrl, string $videoFile): void
     {
+        // Try downloading the file directly
+        $artifacts = $this->githubActionRunStarterAndArtifactDownloader->runActionAndGetArtifacts(
+            $this->snapTikApiRepo->token,
+            $this->snapTikApiRepo->owner,
+            $this->snapTikApiRepo->repo,
+            'get-video-file.yml',
+            refreshTime: 65,
+            inputs: ['link' => $videoToPostUrl]
+        );
+
+        if (! $artifacts) {
+            // throw new Exception('No artifact');
+            goto tryFileLink;
+        }
+
+        $artifact = $artifacts[0];
+
+        if (! file_exists($artifact)) {
+            //throw new Exception('Artifact missing');
+            goto tryFileLink;
+        }
+
+        rename($artifact, $videoFile);
+        goto checkFile;
+
+        tryFileLink:
+
+        // Try getting file link and downloading the file
         $artifacts = $this->githubActionRunStarterAndArtifactDownloader->runActionAndGetArtifacts(
             $this->snapTikApiRepo->token,
             $this->snapTikApiRepo->owner,
@@ -149,7 +177,7 @@ class MultiSourcesTiktokDownloader
         $artifact = $artifacts[0];
 
         if (! file_exists($artifact)) {
-            throw new Exception('Artifact meaning');
+            throw new Exception('Artifact missing');
         }
 
         $downloadLink = trim(file_get_contents($artifact));
@@ -180,6 +208,8 @@ class MultiSourcesTiktokDownloader
         if (! file_exists($videoFile)) {
             throw new Exception('Download failed');
         }
+
+        checkFile:
 
         $videoFolder = __DIR__ . DIRECTORY_SEPARATOR;
 
